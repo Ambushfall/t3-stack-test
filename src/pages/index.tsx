@@ -5,7 +5,9 @@ import Link from "next/link";
 import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const hello = trpc.example.hello.useQuery({ text: "ASD TRPC" });
+
+  console.log(hello)
 
   return (
     <>
@@ -44,10 +46,29 @@ const Home: NextPage = () => {
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
+
         </div>
       </main>
     </>
   );
 };
+
+const exampleMutate = () => {
+  const mutation = trpc.example.test.useMutation();
+  const handleLogin = async () => {
+    mutation.mutate({ name: 'tester' })
+  }
+
+  return (
+    <div className=' text-white'>
+      <h1>Login Form</h1>
+      <button onClick={handleLogin} disabled={mutation.isLoading}>
+        Login
+      </button>
+      {mutation.error && <p>Something went wrong! {mutation.error.message}</p>}
+    </div>
+  )
+}
+
 
 export default Home;
